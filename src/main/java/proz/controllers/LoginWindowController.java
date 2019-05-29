@@ -60,13 +60,12 @@ public class LoginWindowController
     {
         FxmlUtils.switchScene("/fxmlFiles/StartWindow.fxml", (Node) event.getSource(),
                 "/images/testSys.png");
-
     }
 
     private List<User> getMatchingUser(boolean teacherIsLoggingIn, String username, String password)
     {
         try {
-            return UserDataModel.getUserDao().queryForUser(UserDataModel.getUserDao(), username, password, teacherIsLoggingIn);
+            return UserDataModel.getUserDao().queryForUser(username, password, teacherIsLoggingIn);
         } catch (ApplicationException e) {
 //            DialogsUtils.errorDialog(e.getMessage()); // wyrzuca dwa dialogi niepotrzebnie
         }
@@ -77,15 +76,11 @@ public class LoginWindowController
     {
         UserDataModel.setCurrentUser(UserConverter.userToUserFx(userList.get(0)));
         if(teacherIsLoggingIn)
-        {
             FxmlUtils.switchScene("/fxmlFiles/TeacherChoiceWindow.fxml",
                     (Node) event.getSource(), "/images/teacher.png");
-        }
         else
-        {
             FxmlUtils.switchScene("/fxmlFiles/StudentChoiceWindow.fxml",
                     (Node) event.getSource(), "/images/student.png");
-        }
     }
 
     private void loginIfUsernameAndPasswordMatches(Event event, boolean teacherIsLoggingIn, String username, String password)
@@ -95,11 +90,10 @@ public class LoginWindowController
         if(userList == null || userList.isEmpty())// potrzebne oba warunki żeby nie wypluwało błędów
         {
             DialogsUtils.unsuccessfulLoginDialog();
+            passwordField.clear();
         }
         else
-        {
             loginAsUser(event, teacherIsLoggingIn, userList);
-        }
     }
 
     @FXML
@@ -115,27 +109,21 @@ public class LoginWindowController
     private void loginWhenEnterPressed(KeyEvent keyEvent)
     {
         if(keyEvent.getCode().equals(KeyCode.ENTER))
-        {
             login(keyEvent);
-        }
     }
 
     @FXML
     private void highlightOnEnterButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_ENTERED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(new DropShadow());
-        }
     }
 
     @FXML
     private void stopHighlightingOnExitButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_EXITED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(null);
-        }
     }
 
     @FXML

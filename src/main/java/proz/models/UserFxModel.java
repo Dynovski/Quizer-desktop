@@ -68,4 +68,10 @@ public class UserFxModel
     {
         this.isTeacher.set(isTeacher);
     }
+
+    @Override
+    public String toString()
+    {
+        return  username.get();
+    }
 }

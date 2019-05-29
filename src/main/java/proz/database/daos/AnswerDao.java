@@ -15,10 +15,10 @@ public class AnswerDao extends CommonDao
         super();
     }
 
-    public List<Answer> queryForAnswersFromQuestion(AnswerDao dao, int questionId) throws ApplicationException
+    public List<Answer> queryForAnswersFromQuestion(int questionId) throws ApplicationException
     {
         try {
-            QueryBuilder<Answer, Object> queryBuilder = dao.getQueryBuilder(Answer.class);
+            QueryBuilder<Answer, Object> queryBuilder = this.getQueryBuilder(Answer.class);
             return queryBuilder.where().eq("QUESTION_ID", questionId).query();
         } catch (SQLException e) {
             throw new ApplicationException("Query for answers from question error");
@@ -31,13 +31,13 @@ public class AnswerDao extends CommonDao
         }
     }
 
-    public List<Answer> queryForAnswersFromTest(AnswerDao dao, int testId) throws ApplicationException
+    public List<Answer> queryForAnswersFromTest(int testId) throws ApplicationException
     {
         try {
-            QueryBuilder<Answer, Object> queryBuilder = dao.getQueryBuilder(Answer.class);
+            QueryBuilder<Answer, Object> queryBuilder = this.getQueryBuilder(Answer.class);
             QuestionDao questionDao = new QuestionDao();
             return queryBuilder.where().in("QUESTION_ID",
-                    questionDao.queryForQuestionsFromTest(questionDao, testId )).query();
+                    questionDao.queryForQuestionsFromTest(testId)).query();
         } catch (SQLException e) {
             throw new ApplicationException("Query for answers from test error");
         } finally {
@@ -45,6 +45,21 @@ public class AnswerDao extends CommonDao
                 this.connectionSource.close();
             } catch (IOException e) {
                 throw new ApplicationException("Close connection error");
+            }
+        }
+    }
+
+    public void deleteAnswersFromQuestion(int questionId) throws ApplicationException
+    {
+        try {
+            this.getDao(Answer.class).executeRaw("delete from ANSWERS where QUESTION_ID = " + questionId);
+        } catch (SQLException e) {
+            throw new ApplicationException("Delete answers from question error");
+        } finally {
+            try {
+                this.connectionSource.close();
+            } catch (IOException e) {
+                throw new ApplicationException("Close connection error when deleting answers from question: " + questionId);
             }
         }
     }

@@ -8,8 +8,8 @@ public class ResultFxModel
     private IntegerProperty resultId = new SimpleIntegerProperty();
     private ObjectProperty<Date> date = new SimpleObjectProperty<>();
     private IntegerProperty score = new SimpleIntegerProperty();
-    private ObjectProperty<UserFxModel> userId = new SimpleObjectProperty<>();
-    private ObjectProperty<TestFxModel> testId = new SimpleObjectProperty<>();
+    private ObjectProperty<UserFxModel> user = new SimpleObjectProperty<>();
+    private ObjectProperty<TestFxModel> test = new SimpleObjectProperty<>();
 
     public int getResultId()
     {
@@ -56,33 +56,45 @@ public class ResultFxModel
         this.score.set(score);
     }
 
-    public UserFxModel getUserId()
+    public UserFxModel getUser()
     {
-        return userId.get();
+        return user.get();
     }
 
-    public ObjectProperty<UserFxModel> userIdProperty()
+    public ObjectProperty<UserFxModel> userProperty()
     {
-        return userId;
+        return user;
     }
 
-    public void setUserId(UserFxModel userId)
+    public void setUser(UserFxModel user)
     {
-        this.userId.set(userId);
+        this.user.set(user);
     }
 
-    public TestFxModel getTestId()
+    public TestFxModel getTest()
     {
-        return testId.get();
+        return test.get();
     }
 
-    public ObjectProperty<TestFxModel> testIdProperty()
+    public ObjectProperty<TestFxModel> testProperty()
     {
-        return testId;
+        return test;
     }
 
-    public void setTestId(TestFxModel testId)
+    public void setTest(TestFxModel test)
     {
-        this.testId.set(testId);
+        this.test.set(test);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ResultFxModel{" +
+                "resultId=" + resultId.get() +
+                ", date=" + date.get() +
+                ", score=" + score.get() +
+                ", user=" + user.get().getUsername() +
+                ", test=" + test.get().getTestName() +
+                '}';
     }
 }

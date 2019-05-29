@@ -2,6 +2,7 @@ package proz.database.daos;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.logger.LocalLog;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -23,7 +24,7 @@ public abstract class CommonDao
 
     public CommonDao()
     {
-//        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         this.connectionSource = DbManager.getConnectionSource();
     }
 

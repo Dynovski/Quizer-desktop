@@ -14,8 +14,8 @@ public class ResultConverter
         fxModel.setResultId(result.getResultId());
         fxModel.setDate(result.getDate());
         fxModel.setScore(result.getScore());
-        fxModel.setUserId(UserConverter.userToUserFx(result.getUserId()));
-        fxModel.setTestId(TestConverter.testToTestFx(result.getTestId()));
+        fxModel.setUser(UserConverter.userToUserFx(result.getUserId()));
+        fxModel.setTest(TestConverter.testToTestFx(result.getTestId()));
         return fxModel;
     }
 
@@ -24,8 +24,8 @@ public class ResultConverter
         Result result = new Result();
         result.setResultId(fxModel.getResultId());
         result.setScore(fxModel.getScore());
-        result.setUserId(UserConverter.userFxToUser(fxModel.getUserId()));
-        result.setTestId(TestConverter.testFxToTest(fxModel.getTestId()));
+        result.setUserId(UserConverter.userFxToUser(fxModel.getUser()));
+        result.setTestId(TestConverter.testFxToTest(fxModel.getTest()));
         return result;
     }
 }

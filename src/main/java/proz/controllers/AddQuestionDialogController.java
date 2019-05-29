@@ -14,7 +14,6 @@ import proz.models.TestDataModel;
 import proz.utils.DialogsUtils;
 import proz.utils.converters.TestConverter;
 import proz.utils.exceptions.ApplicationException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +78,8 @@ public class AddQuestionDialogController
         return question;
     }
 
-    private void saveAnswersInDataBase(List<Answer> answers) {
+    private void saveAnswersInDataBase(List<Answer> answers)
+    {
         try {
             AnswerDataModel.saveManyAnswersInDataBase(answers);
         } catch (ApplicationException e) {

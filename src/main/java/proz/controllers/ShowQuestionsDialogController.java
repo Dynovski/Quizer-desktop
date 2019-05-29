@@ -1,9 +1,9 @@
 package proz.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
@@ -15,8 +15,8 @@ import proz.models.TestDataModel;
 import proz.utils.DialogsUtils;
 import proz.utils.FxmlUtils;
 import proz.utils.exceptions.ApplicationException;
-
 import java.io.IOException;
+import java.util.Optional;
 
 public class ShowQuestionsDialogController
 {
@@ -63,22 +63,16 @@ public class ShowQuestionsDialogController
     private void addQuestion()
     {
         if(TestDataModel.getTest() == null)
-        {
             DialogsUtils.testNotSelectedDialog();
-        }
         else
-        {
             FxmlUtils.createNewStageDialog("/fxmlFiles/AddQuestionDialog.fxml", "/images/teacher.png");
-        }
     }
 
     @FXML
     private void editQuestion()
     {
         if(QuestionDataModel.getQuestion() == null)
-        {
             DialogsUtils.questionNotSelectedDialog();
-        }
         else
         {
             FXMLLoader loader = FxmlUtils.getLoader("/fxmlFiles/EditQuestionDialog.fxml");
@@ -100,8 +94,28 @@ public class ShowQuestionsDialogController
         }
     }
 
-    @FXML
-    private void deleteQuestionWithAnswers(ActionEvent event)
+    private void deleteQuestionWhenOkPressed(QuestionFxModel selectedQuestion, Optional<ButtonType> result)
     {
+        if(result.isPresent() && result.get() == ButtonType.OK)
+        {
+            try {
+                QuestionDataModel.deleteQuestion(selectedQuestion);
+            } catch (ApplicationException e) {
+                DialogsUtils.errorDialog(e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void deleteQuestionWithAnswers()
+    {
+        QuestionFxModel selectedQuestion = QuestionDataModel.getQuestion();
+        if(selectedQuestion== null)
+            DialogsUtils.questionNotSelectedDialog();
+        else
+        {
+            Optional<ButtonType> result = DialogsUtils.DeleteQuestionConfirmationDialog();
+            deleteQuestionWhenOkPressed(selectedQuestion, result);
+        }
     }
 }

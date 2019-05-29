@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AnswerDataModel
 {
-    private static ObservableList<AnswerFxModel> answersFromQuestion = FXCollections.observableArrayList();// LISTA ODPOWIEDZI DLA ZAZNACZONEGO PYTANIA
-    private static ObservableList<AnswerFxModel> answers = FXCollections.observableArrayList();
+    private static ObservableList<AnswerFxModel> answersFromQuestion = FXCollections.observableArrayList();
+    private static ObservableList<AnswerFxModel> answersFromTest = FXCollections.observableArrayList();
     private static AnswerDao answerDao = new AnswerDao();
 
     private AnswerDataModel() {}
@@ -40,23 +40,23 @@ public class AnswerDataModel
 
     public static void getAnswersFromQuestion(int questionId) throws ApplicationException
     {
-        List<Answer> answers = answerDao.queryForAnswersFromQuestion(answerDao, questionId);
+        List<Answer> answers = answerDao.queryForAnswersFromQuestion(questionId);
         populateAnswersFromQuestion(answers);
     }
 
-    private static void populateAnswers(List<Answer> answerList)
+    private static void populateAnswersFromTest(List<Answer> answerList)
     {
-        answers.clear();
+        answersFromTest.clear();
         answerList.forEach(answer -> {
             AnswerFxModel answerFx = AnswerConverter.answerToAnswerFx(answer);
-            answers.add(answerFx);
+            answersFromTest.add(answerFx);
         });
     }
 
     public static void getAnswersFromTest(int testId) throws ApplicationException
     {
-        List<Answer> answers = answerDao.queryForAnswersFromTest(answerDao, testId);
-        populateAnswers(answers);
+        List<Answer> answers = answerDao.queryForAnswersFromTest(testId);
+        populateAnswersFromTest(answers);
     }
 
     public static void updateAnswersInDataBase() throws ApplicationException
@@ -65,40 +65,15 @@ public class AnswerDataModel
             answerDao.update(AnswerConverter.answerFxToAnswer(answer));
     }
 
-    public void fetchDataFromDataBase()
-    {
-//        AnswerDao answerDao = new AnswerDao(); // nowy dao
-//        List<Answer> answersFromQuestion = answerDao.queryForAll(Answer.class); // sciagniecie wszystkich odpowiedzi
-//        populateAnswersFromQuestion();// wrzucenie ich do datamodelu
-    }
-
-    public void deleteAnswerById()
-    {
-//        AnswerDao answerDao = new AnswerDao();//nowy dao
-//        answerDao.deleteById(Answer.class, answer.getValue().getAnswerId())//usuniecie zaznaczonej odpowiedzi
-        // fetchDataFromDataBase();
-//        // załozenie bedzi wywolane tylko przy usuwaniu z gory, jednej odpowiedzi nie da sie usunąc
-    }
-
     public static ObservableList<AnswerFxModel> getAnswersFromQuestion()
     {
         return answersFromQuestion;
     }
 
-    public static void setAnswersFromQuestion(ObservableList<AnswerFxModel> answersFromQuestion)
-    {
-        AnswerDataModel.answersFromQuestion = answersFromQuestion;
-    }
-
-    public static ObservableList<AnswerFxModel> getAnswers()
+    public static ObservableList<AnswerFxModel> getAnswersFromTest()
     {
 
-        return answers;
-    }
-
-    public static void setAnswers(ObservableList<AnswerFxModel> answers)
-    {
-        AnswerDataModel.answers = answers;
+        return answersFromTest;
     }
 
     public static AnswerDao getAnswerDao()

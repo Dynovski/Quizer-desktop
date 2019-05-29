@@ -6,7 +6,7 @@ import proz.database.daos.UserDao;
 
 public class UserDataModel
 {
-    private static ObjectProperty<UserFxModel> currentUser = new SimpleObjectProperty<>(new UserFxModel()); // OBECNIE ZALOGOWANY UŻYTKOWNIK
+    private static ObjectProperty<UserFxModel> currentUser = new SimpleObjectProperty<>(new UserFxModel());
     private static UserDao userDao = new UserDao();
 
     private UserDataModel() {}
@@ -28,7 +28,11 @@ public class UserDataModel
 
     public static void clearCurrentUser()
     {
-        currentUser.set(null);
+        currentUser.get().setPassword(null);
+        currentUser.get().setUsername(null);
+        currentUser.get().setIsTeacher(false);
+        currentUser.get().setUserId(0);
+        //currentUser.set(new UserFxModel());
     }
 
     public static UserDao getUserDao()

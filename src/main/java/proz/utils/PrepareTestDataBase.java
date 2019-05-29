@@ -793,7 +793,7 @@ public class PrepareTestDataBase
 
         Result rch5 = new Result();
         rch5.setDate(new Date());
-        rch5.setScore(2);
+        rch5.setScore(3);
         rch5.setUserId(u5);
         rch5.setTestId(chT1);
         resultDao.createOrUpdate(rch5);
@@ -1013,7 +1013,7 @@ public class PrepareTestDataBase
         Result rl2 = new Result();
         rl2.setDate(new Date());
         rl2.setScore(4);
-        rl2.setUserId(u2);
+        rl2.setUserId(u1);
         rl2.setTestId(lT1);
         resultDao.createOrUpdate(rl2);
 

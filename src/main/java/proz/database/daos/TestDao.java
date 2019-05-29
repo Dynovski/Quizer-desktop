@@ -15,10 +15,10 @@ public class TestDao extends CommonDao
         super();
     }
 
-    public List<Test> queryForTestsFromCategory(TestDao dao, int categoryId) throws ApplicationException
+    public List<Test> queryForTestsFromCategory(int categoryId) throws ApplicationException
     {
         try {
-            QueryBuilder<Test, Object> queryBuilder = dao.getQueryBuilder(Test.class);
+            QueryBuilder<Test, Object> queryBuilder = this.getQueryBuilder(Test.class);
             return queryBuilder.where().eq("CATEGORY_ID", categoryId).query();
         } catch (SQLException e) {
             throw new ApplicationException("Query for tests from category error");
@@ -31,20 +31,42 @@ public class TestDao extends CommonDao
         }
     }
 
-    public Test queryForTest(TestDao dao, String testName) throws ApplicationException
+    public void deleteTestsFromCategory(int categoryId) throws ApplicationException
     {
-        QueryBuilder<Test, Object> queryBuilder = dao.getQueryBuilder(Test.class);
+        List<Test> toDelete;
         try {
-            return queryBuilder.where().eq("TEST_NAME", testName).query().get(0);
+            QueryBuilder<Test, Object> queryBuilder = getQueryBuilder(Test.class);
+            toDelete = queryBuilder.where().eq("CATEGORY_ID", categoryId).query();
+            if(!toDelete.isEmpty())
+            {
+                ResultDao resultDao = new ResultDao();
+                QuestionDao questionDao = new QuestionDao();
+                for (Test test : toDelete)
+                {
+                    resultDao.deleteTestResults(test.getTestId());
+                    questionDao.deleteQuestionsFromTest(test.getTestId());
+                    //delete(test);
+                    deleteById(Test.class, test.getTestId());
+                }
+            }
         } catch (SQLException e) {
-            throw new ApplicationException("Query for test error");
+            throw new ApplicationException("Delete tests from category error");
         } finally {
             try {
                 this.connectionSource.close();
             } catch (IOException e) {
-                throw new ApplicationException("Close connection error");
+                throw new ApplicationException("Close connection error when deleting tests from category");
             }
         }
+    }
+
+    public void deleteTestById(int testId) throws ApplicationException
+    {
+        ResultDao resultDao = new ResultDao();
+        QuestionDao questionDao = new QuestionDao();
+        resultDao.deleteTestResults(testId);
+        questionDao.deleteQuestionsFromTest(testId);
+        deleteById(Test.class, testId);
     }
 }
 

@@ -15,20 +15,15 @@ public class UserDao extends CommonDao
         super();
     }
 
-    public List<User> queryForUser(UserDao dao, String username, String password, boolean isTeacher) throws ApplicationException
+    public List<User> queryForUser(String username, String password, boolean isTeacher) throws ApplicationException
     {
-        QueryBuilder<User, Object> queryBuilder = dao.getQueryBuilder(User.class);
-        try
-        {
+        QueryBuilder<User, Object> queryBuilder = this.getQueryBuilder(User.class);
+        try {
             return queryBuilder.where().eq("USERNAME", username).and().eq("PASSWORD", password).
                     and().eq("TEACHER", isTeacher).query();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new ApplicationException("Query for user error");
-        }
-        finally
-        {
+        } finally {
             try {
                 this.connectionSource.close();
             } catch (IOException e) {

@@ -10,14 +10,12 @@ import proz.database.models.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class DbManager {
-
+public class DbManager
+{
     private static final Logger LOGGER = LoggerFactory.getLogger(DbManager.class);
-
     private static final String JDBC_DRIVER_HD = "jdbc:h2:C:\\Users\\YogaC930\\Desktop\\TestSystemDb";
     private static final String USER = "admin";
     private static final String PASS = "admin";
-
     private static ConnectionSource connectionSource;
 
     public static void initDatabase()
@@ -39,9 +37,7 @@ public class DbManager {
 
     public static ConnectionSource getConnectionSource(){
         if(connectionSource == null)
-        {
             createConnectionSource();
-        }
         return connectionSource;
     }
 
@@ -77,7 +73,6 @@ public class DbManager {
             TableUtils.dropTable(connectionSource, Answer.class, true);
             TableUtils.dropTable(connectionSource, Question.class, true);
             TableUtils.dropTable(connectionSource, Test.class, true);
-            TableUtils.dropTable(connectionSource, Result.class, true);
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
         }

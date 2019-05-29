@@ -1,7 +1,6 @@
 package proz.controllers;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -65,7 +64,7 @@ public class StudentChoiceWindowController
     private void fetchCategoryDataFromDataBase()
     {
         try {
-            CategoryDataModel.fetchDataFromDataBase();
+            CategoryDataModel.fetchCategoriesFromDataBase();
         } catch (ApplicationException e) {
             DialogsUtils.errorDialog(e.getMessage());
         }
@@ -104,6 +103,7 @@ public class StudentChoiceWindowController
         Optional<ButtonType> result = DialogsUtils.exitConfirmationDialog();
         exitOnOkPressed(result);
     }
+
     @FXML
     private void showStudentGuideDialog()
     {
@@ -114,22 +114,18 @@ public class StudentChoiceWindowController
     private void highlightOnEnterButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_ENTERED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(new DropShadow());
-        }
     }
 
     @FXML
     private void stopHighlightingOnExitButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_EXITED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(null);
-        }
     }
 
     @FXML
-    private void beginTest(ActionEvent event)
+    private void beginTest()
     {
         try {
             QuestionDataModel.getQuestionsFromTest(TestDataModel.getTest().getTestId());
@@ -137,7 +133,7 @@ public class StudentChoiceWindowController
             DialogsUtils.errorDialog(e.getMessage());
         }
         if(QuestionDataModel.getQuestions().size() < 5)
-            DialogsUtils.errorDialog("Test must contain at least 5 questions");
+            DialogsUtils.notEnoughQuestionsDialog();
         else
             FxmlUtils.switchScene("/fxmlFiles/TestWindow.fxml",
                     userChoicePanel, "/images/student.png");

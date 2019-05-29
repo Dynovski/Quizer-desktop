@@ -20,7 +20,8 @@ public class StartWindowController
                 "/images/Lock.png");
     }
 
-    private void exitOnOkPressed(Optional<ButtonType> result) {
+    private void exitOnOkPressed(Optional<ButtonType> result)
+    {
         if(result.isPresent() && result.get() == ButtonType.OK)
             Platform.exit();
     }
@@ -42,17 +43,13 @@ public class StartWindowController
     private void highlightOnEnterButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_ENTERED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(new DropShadow());
-        }
     }
 
     @FXML
     private void stopHighlightingOnExitButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_EXITED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(null);
-        }
     }
 }

@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import proz.database.daos.AnswerDao;
 import proz.database.daos.QuestionDao;
 import proz.database.models.Question;
 import proz.database.models.Test;
@@ -14,8 +15,8 @@ import java.util.List;
 
 public class QuestionDataModel
 {
-    private static ObservableList<QuestionFxModel> questions = FXCollections.observableArrayList(); // LISTA PYTAŃ DO ZAZNACZONEGO TESTU
-    private static ObjectProperty<QuestionFxModel> question = new SimpleObjectProperty<>(); // ZAZNACZONE PYTANIE
+    private static ObservableList<QuestionFxModel> questions = FXCollections.observableArrayList();
+    private static ObjectProperty<QuestionFxModel> question = new SimpleObjectProperty<>();
     private static QuestionDao questionDao = new QuestionDao();
 
     private QuestionDataModel() {}
@@ -31,7 +32,7 @@ public class QuestionDataModel
 
     public static void getQuestionsFromTest(int testId) throws ApplicationException
     {
-        List<Question> questions = questionDao.queryForQuestionsFromTest(questionDao, testId);
+        List<Question> questions = questionDao.queryForQuestionsFromTest(testId);
         populateQuestions(questions);
     }
 
@@ -41,6 +42,14 @@ public class QuestionDataModel
         questionDao.createOrUpdateAndRefresh(newQuestion);
         questions.add(QuestionConverter.questionToQuestionFx(newQuestion));
         return newQuestion;
+    }
+
+    public static void deleteQuestion(QuestionFxModel selectedQuestion) throws ApplicationException
+    {
+        AnswerDao answerDao = new AnswerDao();
+        answerDao.deleteAnswersFromQuestion(selectedQuestion.getQuestionId());
+        questionDao.deleteById(Question.class, selectedQuestion.getQuestionId());
+        questions.remove(selectedQuestion);
     }
 
     public static void updateQuestionInDataBase() throws ApplicationException

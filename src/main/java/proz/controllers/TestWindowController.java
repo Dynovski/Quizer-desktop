@@ -17,11 +17,9 @@ import proz.utils.FxmlUtils;
 import proz.utils.converters.TestConverter;
 import proz.utils.converters.UserConverter;
 import proz.utils.exceptions.ApplicationException;
-
 import java.util.Random;
 import java.util.Vector;
-
-import static proz.models.AnswerDataModel.getAnswers;
+import static proz.models.AnswerDataModel.getAnswersFromTest;
 import static proz.models.QuestionDataModel.getQuestions;
 import static proz.models.TestDataModel.getTest;
 
@@ -131,12 +129,12 @@ public class TestWindowController {
             questionButtons.removeAllElements();
             questionButtons = getButtonsToQuestion(j);
             int index = 0;
-            for (int i = 0; i < getAnswers().size(); i++)
+            for (int i = 0; i < getAnswersFromTest().size(); i++)
             {
-                if(getAnswers().get(i).getQuestionId().getQuestionId() == getQuestions().get(j).getQuestionId())
+                if(getAnswersFromTest().get(i).getQuestionId().getQuestionId() == getQuestions().get(j).getQuestionId())
                 {
-                    questionButtons.get(index).setText(getAnswers().get(i).getAnswer());
-                    if (getAnswers().get(i).isIsCorrect())
+                    questionButtons.get(index).setText(getAnswersFromTest().get(i).getAnswer());
+                    if (getAnswersFromTest().get(i).isIsCorrect())
                     {
                         correct.add(getButtonsToQuestion(j).get(index));
                     }
@@ -203,11 +201,11 @@ public class TestWindowController {
         while( getQuestions().size() > 5)
         {
             a = random.nextInt(getQuestions().size());
-            for (int i = 0; i < getAnswers().size(); i++)
+            for (int i = 0; i < getAnswersFromTest().size(); i++)
             {
-                if(getAnswers().get(i).getQuestionId().equals(getQuestions().get(a)))
+                if(getAnswersFromTest().get(i).getQuestionId().equals(getQuestions().get(a)))
                 {
-                    getAnswers().remove(i);
+                    getAnswersFromTest().remove(i);
                     i--;
                 }
             }
@@ -247,11 +245,14 @@ public class TestWindowController {
 
     private void saveResult()
     {
-        try {
-            ResultDataModel.saveResultInDataBase(sum, TestConverter.testFxToTest(TestDataModel.getTest()),
-                    UserConverter.userFxToUser(UserDataModel.getCurrentUser()));
-        } catch (ApplicationException e) {
-            DialogsUtils.errorDialog(e.getMessage());
+        if(!UserDataModel.getCurrentUser().isIsTeacher())
+        {
+            try {
+                ResultDataModel.saveResultInDataBase(sum, TestConverter.testFxToTest(TestDataModel.getTest()),
+                        UserConverter.userFxToUser(UserDataModel.getCurrentUser()));
+            } catch (ApplicationException e) {
+                DialogsUtils.errorDialog(e.getMessage());
+            }
         }
     }
 

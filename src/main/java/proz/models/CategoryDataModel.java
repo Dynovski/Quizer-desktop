@@ -12,8 +12,8 @@ import java.util.List;
 
 public class CategoryDataModel
 {
-    private static ObservableList<CategoryFxModel> categories = FXCollections.observableArrayList(); // LISTA WSZYSTKICH KATEGORII
-    private static ObjectProperty<CategoryFxModel> category = new SimpleObjectProperty<>(); // KATEGORIA ZAZNACZONA W WIDOKU
+    private static ObservableList<CategoryFxModel> categories = FXCollections.observableArrayList();
+    private static ObjectProperty<CategoryFxModel> category = new SimpleObjectProperty<>();
     private static CategoryDao categoryDao = new CategoryDao();
 
     private CategoryDataModel() {}
@@ -26,18 +26,17 @@ public class CategoryDataModel
             categories.add(categoryFx);
         });
     }
-    public static void fetchDataFromDataBase() throws ApplicationException
+    public static void fetchCategoriesFromDataBase() throws ApplicationException
     {
         List<Category> categories = categoryDao.queryForAll(Category.class);
         populateCategories(categories);
     }
 
-    public void deleteCategoryById()
+    public static void deleteCategoryById(int categoryId) throws ApplicationException
     {
-//        CategoryDao categoryDao = new CategoryDao(); // nowy dao
-//        CategoryDao.deleteById(Category.class, category.getValue().getCategory())//usuniecie zaznaczonej odpowiedzi
-        // fetchDataFromDataBase();
-//        // załozenie bedzi wywolane tylko przy usuwaniu z gory, jednej odpowiedzi nie da sie usunąc
+        TestDataModel.deleteTestsFromCategory(categoryId);
+        categoryDao.deleteById(Category.class, categoryId);
+        fetchCategoriesFromDataBase();
     }
 
     public static void saveCategoryInDataBase(String categoryName) throws ApplicationException

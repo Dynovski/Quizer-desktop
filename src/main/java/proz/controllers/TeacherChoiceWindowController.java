@@ -1,7 +1,6 @@
 package proz.controllers;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -15,7 +14,6 @@ import proz.utils.DialogsUtils;
 import proz.utils.FxmlUtils;
 import proz.utils.converters.CategoryConverter;
 import proz.utils.exceptions.ApplicationException;
-
 import java.util.Optional;
 
 public class TeacherChoiceWindowController
@@ -49,6 +47,8 @@ public class TeacherChoiceWindowController
         testContextMenu.getItems().get(2).disableProperty().bind(testNameTable.getSelectionModel()
                 .selectedItemProperty().isNull());
         testContextMenu.getItems().get(3).disableProperty().bind(testNameTable.getSelectionModel()
+                .selectedItemProperty().isNull());
+        testContextMenu.getItems().get(4).disableProperty().bind(testNameTable.getSelectionModel()
                 .selectedItemProperty().isNull());
     }
 
@@ -85,7 +85,7 @@ public class TeacherChoiceWindowController
     private void fetchCategoryDataFromDataBase()
     {
         try {
-            CategoryDataModel.fetchDataFromDataBase();
+            CategoryDataModel.fetchCategoriesFromDataBase();
         } catch (ApplicationException e) {
             DialogsUtils.errorDialog(e.getMessage());
         }
@@ -126,6 +126,7 @@ public class TeacherChoiceWindowController
         Optional<ButtonType> result = DialogsUtils.exitConfirmationDialog();
         exitOnOkPressed(result);
     }
+
     @FXML
     private void showStudentGuideDialog()
     {
@@ -154,18 +155,14 @@ public class TeacherChoiceWindowController
     private void highlightOnEnterButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_ENTERED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(new DropShadow());
-        }
     }
 
     @FXML
     private void stopHighlightingOnExitButtonArea(MouseEvent mouseEvent)
     {
         if(mouseEvent.getEventType().equals(MouseEvent.MOUSE_EXITED))
-        {
             ((Button) mouseEvent.getSource()).setEffect(null);
-        }
     }
 
     @FXML
@@ -202,7 +199,8 @@ public class TeacherChoiceWindowController
         }
         else
         {
-            Optional<String> editedCategoryDialogResult = DialogsUtils.editCategoryDialog(CategoryDataModel.getCategory().getCategoryName());
+            Optional<String> editedCategoryDialogResult = DialogsUtils.editCategoryDialog(CategoryDataModel.
+                    getCategory().getCategoryName());
             try {
                 editCategoryWhenDialogFilled(editedCategoryDialogResult);
             } catch (ApplicationException e) {
@@ -265,43 +263,28 @@ public class TeacherChoiceWindowController
     private void addQuestion()
     {
         if(TestDataModel.getTest() == null)
-        {
             DialogsUtils.testNotSelectedDialog();
-        }
         else
-        {
             FxmlUtils.createNewStageDialog("/fxmlFiles/AddQuestionDialog.fxml", "/images/teacher.png");
-        }
     }
 
     @FXML
     private void showQuestions()
     {
         if(TestDataModel.getTest() == null)
-        {
             DialogsUtils.testNotSelectedDialog();
-        }
         else
-        {
             FxmlUtils.createNewStageDialog("/fxmlFiles/ShowQuestionsDialog.fxml", "/images/teacher.png");
-        }
     }
 
     @FXML
-    private void showResults(ActionEvent event)
+    private void showResults()
     {
-        if(TestDataModel.getTest() == null)
-        {
-            DialogsUtils.testNotSelectedDialog();
-        }
-        else
-        {
-//            FxmlUtils.createNewStageDialog("/fxmlFiles/.fxml", "/images/teacher.png");
-        }
+        FxmlUtils.createNewStageDialog("/fxmlFiles/ResultDialog.fxml", "/images/teacher.png");
     }
 
     @FXML
-    private void beginTest(ActionEvent event)
+    private void beginTest()
     {
         try {
             QuestionDataModel.getQuestionsFromTest(TestDataModel.getTest().getTestId());
@@ -309,7 +292,7 @@ public class TeacherChoiceWindowController
             DialogsUtils.errorDialog(e.getMessage());
         }
         if(QuestionDataModel.getQuestions().size() < 5)
-            DialogsUtils.errorDialog("Test must contain at least 5 questions");
+            DialogsUtils.notEnoughQuestionsDialog();
         else
             FxmlUtils.switchScene("/fxmlFiles/TestWindow.fxml",
                     teacherChoicePanel, "/images/teacher.png");
@@ -319,12 +302,14 @@ public class TeacherChoiceWindowController
     {
         if(result.isPresent() && result.get() == ButtonType.OK)
         {
-//            testNameTable.getItems().clear();
-//            testData.getCategories().remove(selectedCategory);
+            try {
+                TestDataModel.deleteTestsFromCategory(selectedCategory.getCategoryId());
+                CategoryDataModel.deleteCategoryById(selectedCategory.getCategoryId());
+            } catch (ApplicationException e) {
+                DialogsUtils.errorDialog(e.getMessage());
+            }
         }
     }
-
-    //TODO: usuniecie z bd
 
     @FXML
     private void deleteCategory()
@@ -340,22 +325,22 @@ public class TeacherChoiceWindowController
             deleteCategoryWhenOkPressed(selectedCategory, result);
         }
     }
-    private void deleteTestWhenOkPressed(CategoryFxModel selectedCategory, TestFxModel selectedTest, Optional<ButtonType> result)
+
+    private void deleteTestWhenOkPressed(TestFxModel selectedTest, Optional<ButtonType> result)
     {
         if(result.isPresent() && result.get() == ButtonType.OK)
         {
-//            testData.getCategories().get(testData.getCategories().indexOf(selectedCategory)).getListOfTests().
-//                    remove(selectedTest);
+            try {
+                TestDataModel.deleteTest(selectedTest);
+            } catch (ApplicationException e) {
+                DialogsUtils.errorDialog(e.getMessage());
+            }
         }
     }
-    //TODO: usunięcie bazy danych, następnie usuniecie zawartośći
-
-    // z test table i ponowne wczytanie jej z bazy danych albo aktualizacja zawartości w zalezności od tego co prostsze
 
     @FXML
     private void deleteTest()
     {
-        CategoryFxModel selectedCategory = categoryTable.getSelectionModel().getSelectedItem();
         TestFxModel selectedTest = testNameTable.getSelectionModel().getSelectedItem();
         if(selectedTest == null)
         {
@@ -364,7 +349,7 @@ public class TeacherChoiceWindowController
         else
         {
             Optional<ButtonType> result = DialogsUtils.deleteTestConfirmationDialog();
-            deleteTestWhenOkPressed(selectedCategory, selectedTest, result);
+            deleteTestWhenOkPressed(selectedTest, result);
         }
     }
 }

@@ -52,4 +52,10 @@ public class TestFxModel
     {
         this.categoryId.set(categoryId);
     }
+
+    @Override
+    public String toString()
+    {
+        return testName.get();
+    }
 }

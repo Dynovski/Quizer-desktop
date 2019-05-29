@@ -14,8 +14,8 @@ import java.util.List;
 
 public class TestDataModel
 {
-    private static ObservableList<TestFxModel> tests = FXCollections.observableArrayList(); // LISTA TESTÓW Z DANEJ KATEGORII
-    private static ObjectProperty<TestFxModel> test = new SimpleObjectProperty<>(); // ZAZNACZONY TEST
+    private static ObservableList<TestFxModel> tests = FXCollections.observableArrayList();
+    private static ObjectProperty<TestFxModel> test = new SimpleObjectProperty<>();
     private static TestDao testDao = new TestDao();
 
     private TestDataModel() {}
@@ -31,7 +31,7 @@ public class TestDataModel
 
     public static void getTestsFromCategory(int categoryId) throws ApplicationException
     {
-        List<Test> tests = testDao.queryForTestsFromCategory(testDao, categoryId);
+        List<Test> tests = testDao.queryForTestsFromCategory(categoryId);
         populateTests(tests);
     }
 
@@ -45,6 +45,18 @@ public class TestDataModel
     public static void updateTestInDataBase() throws ApplicationException
     {
         testDao.createOrUpdate(TestConverter.testFxToTest(getTest()));
+    }
+
+    public static void deleteTestsFromCategory(int categoryId) throws ApplicationException
+    {
+        testDao.deleteTestsFromCategory(categoryId);
+        tests.clear();
+    }
+
+    public static void deleteTest(TestFxModel test) throws ApplicationException
+    {
+        testDao.deleteTestById(test.getTestId());
+        tests.remove(test);
     }
 
     public static ObservableList<TestFxModel> getTests()
