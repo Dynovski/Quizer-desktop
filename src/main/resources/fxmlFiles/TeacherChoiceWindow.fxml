@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="teacherChoicePanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="620.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171"
+            minWidth="-Infinity" prefHeight="620.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="proz.controllers.TeacherChoiceWindowController">
     <top>
         <MenuBar style="-fx-background-color: lightsteelblue;" BorderPane.alignment="CENTER">
@@ -29,21 +29,21 @@
                 <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit"/>
                 <MenuItem mnemonicParsing="false" onAction="#logout" text="Logout"/>
             </Menu>
-            <Menu mnemonicParsing="false" text="Add">
+            <Menu fx:id="addMenu" mnemonicParsing="false" text="Add">
                 <items>
                     <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Category"/>
                     <MenuItem mnemonicParsing="false" onAction="#addTest" text="Test"/>
                     <MenuItem mnemonicParsing="false" onAction="#addQuestion" text="Question"/>
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
                 <items>
                     <MenuItem mnemonicParsing="false" onAction="#editCategory" text="Category"/>
                     <MenuItem mnemonicParsing="false" onAction="#editTest" text="Test"/>
                     <MenuItem mnemonicParsing="false" onAction="#showQuestions" text="Question"/>
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Delete">
+            <Menu fx:id="deleteMenu" mnemonicParsing="false" text="Delete">
                 <items>
                     <MenuItem mnemonicParsing="false" onAction="#deleteCategory" text="Category"/>
                     <MenuItem mnemonicParsing="false" onAction="#deleteTest" text="Test"/>

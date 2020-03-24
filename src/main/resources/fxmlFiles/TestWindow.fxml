@@ -353,7 +353,7 @@
                                         </RadioButton>
                                     </children>
                                 </HBox>
-                                <HBox alignment="TOP_CENTER" spacing="100.0">
+                                <HBox alignment="TOP_CENTER" spacing="20.0">
                                     <children>
                                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="35.0" prefWidth="60.0" text="Back" />
                                         <Label fx:id="score" alignment="CENTER" text="Label">

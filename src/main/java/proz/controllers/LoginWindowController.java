@@ -58,6 +58,7 @@ public class LoginWindowController
     @FXML
     private void backToStartWindow(MouseEvent event)
     {
+        usernameTextField.clear();
         FxmlUtils.switchScene("/fxmlFiles/StartWindow.fxml", (Node) event.getSource(),
                 "/images/testSys.png");
     }

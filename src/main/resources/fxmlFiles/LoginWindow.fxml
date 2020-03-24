@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,56 +14,90 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proz.controllers.LoginWindowController">
+<Pane fx:id="loginPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="357.0" prefWidth="478.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="proz.controllers.LoginWindowController">
     <children>
-        <ImageView fitHeight="727.0" fitWidth="1096.0" layoutX="-557.0" layoutY="-363.0">
+        <ImageView fitHeight="536.0" fitWidth="878.0" layoutY="-7.0">
             <image>
-                <Image url="@../images/pglog.jpg" />
+                <Image url="@../images/bglogin.jpg"/>
             </image>
+            <effect>
+                <Blend mode="GREEN"/>
+            </effect>
         </ImageView>
         <VBox layoutX="61.0" layoutY="33.0">
             <children>
                 <Label text="Username">
                     <font>
-                        <Font size="14.0" />
+                        <Font name="Manjari Bold" size="19.0"/>
                     </font>
                     <effect>
-                        <DropShadow blurType="GAUSSIAN" color="WHITE" />
-                    </effect></Label>
-                <TextField fx:id="usernameTextField" onKeyPressed="#loginWhenEnterPressed" prefWidth="200.0" style="-fx-background-color: azure;" />
+                        <DropShadow blurType="GAUSSIAN" color="WHITE"/>
+                    </effect>
+                </Label>
+                <TextField fx:id="usernameTextField" onKeyPressed="#loginWhenEnterPressed" prefHeight="35.0"
+                           prefWidth="350.0" style="-fx-background-color: azure;">
+                    <font>
+                        <Font size="19.0"/>
+                    </font>
+                </TextField>
             </children>
         </VBox>
-        <VBox layoutX="61.0" layoutY="84.0">
+        <VBox layoutX="61.0" layoutY="128.0">
             <children>
                 <Label text="Password">
                     <font>
-                        <Font size="14.0" />
+                        <Font name="Manjari Bold" size="19.0"/>
                     </font>
                     <effect>
-                        <DropShadow blurType="TWO_PASS_BOX" color="WHITE" />
-                    </effect></Label>
-                <PasswordField fx:id="passwordField" onKeyPressed="#loginWhenEnterPressed" prefWidth="200.0" style="-fx-background-color: azure;" />
+                        <DropShadow blurType="TWO_PASS_BOX" color="WHITE"/>
+                    </effect>
+                </Label>
+                <PasswordField fx:id="passwordField" onKeyPressed="#loginWhenEnterPressed" prefHeight="39.0"
+                               prefWidth="350.0" style="-fx-background-color: azure;">
+                    <font>
+                        <Font size="19.0"/>
+                    </font>
+                </PasswordField>
             </children>
         </VBox>
-        <CheckBox fx:id="teacherCheckBox" layoutX="61.0" layoutY="134.0" mnemonicParsing="false" onKeyPressed="#selectWhenEnterPressed" prefHeight="16.0" prefWidth="147.0" text="Log in as teacher">
+        <CheckBox fx:id="teacherCheckBox" layoutX="65.0" layoutY="213.0" mnemonicParsing="false"
+                  onKeyPressed="#selectWhenEnterPressed" prefHeight="28.0" prefWidth="168.0" text="Log in as teacher">
             <effect>
-                <DropShadow color="#fffefe" />
-            </effect></CheckBox>
-        <HBox layoutX="80.0" layoutY="175.0" spacing="40.0" />
-        <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="14.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../images/username.png" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="42.0" fitWidth="33.0" layoutX="14.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../images/passowrd.png" />
-            </image>
-        </ImageView>
-        <Button layoutX="255.0" layoutY="198.0" minWidth="16.0" mnemonicParsing="false" onMouseClicked="#backToStartWindow" onMouseEntered="#highlightOnEnterButtonArea" onMouseExited="#stopHighlightingOnExitButtonArea" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: azure;" text="Back" />
-        <Button fx:id="loginButton" layoutX="61.0" layoutY="163.0" mnemonicParsing="false" onKeyPressed="#loginWhenEnterPressed" onMouseClicked="#login" onMouseEntered="#highlightOnEnterButtonArea" onMouseExited="#stopHighlightingOnExitButtonArea" prefHeight="33.0" prefWidth="72.0" style="-fx-background-color: azure;" text="Login">
+                <DropShadow color="#fffefe"/>
+            </effect>
             <font>
-                <Font name="System Bold" size="15.0" />
+                <Font name="Lohit Bengali" size="16.0"/>
+            </font>
+        </CheckBox>
+        <HBox layoutX="80.0" layoutY="175.0" spacing="40.0"/>
+        <ImageView fitHeight="39.0" fitWidth="45.0" layoutX="10.0" layoutY="65.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../images/username.png"/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="46.0" fitWidth="45.0" layoutX="7.0" layoutY="153.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../images/passowrd.png"/>
+            </image>
+        </ImageView>
+        <Button fx:id="backButton" layoutX="100.0" layoutY="261.0" mnemonicParsing="false"
+                onMouseClicked="#backToStartWindow" onMouseEntered="#highlightOnEnterButtonArea"
+                onMouseExited="#stopHighlightingOnExitButtonArea" prefHeight="54.0" prefWidth="97.0"
+                style="-fx-background-color: #3294e5;" text="Back">
+            <font>
+                <Font name="MathJax_Typewriter-Regular" size="20.0"/>
+            </font>
+        </Button>
+        <Button fx:id="loginButton" layoutX="246.0" layoutY="261.0" mnemonicParsing="false"
+                onKeyPressed="#loginWhenEnterPressed" onMouseClicked="#login"
+                onMouseEntered="#highlightOnEnterButtonArea" onMouseExited="#stopHighlightingOnExitButtonArea"
+                prefHeight="54.0" prefWidth="97.0" style="-fx-background-color: #3294e5;" text="Login">
+            <font>
+                <Font name="MathJax_Typewriter-Regular" size="22.0"/>
             </font>
         </Button>
     </children>

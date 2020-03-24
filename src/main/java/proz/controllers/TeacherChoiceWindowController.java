@@ -2,10 +2,7 @@ package proz.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +24,12 @@ public class TeacherChoiceWindowController
     @FXML
     private BorderPane teacherChoicePanel;
     @FXML
+    private Menu addMenu;
+    @FXML
+    private Menu editMenu;
+    @FXML
+    private Menu deleteMenu;
+    @FXML
     private ContextMenu categoryContextMenu;
     @FXML
     private ContextMenu testContextMenu;
@@ -38,11 +41,20 @@ public class TeacherChoiceWindowController
 
     private void disableContextMenusOptionsWhenCannotBeUsed()
     {
+        addMenu.getItems().get(1).disableProperty().bind(categoryTable.getSelectionModel().selectedItemProperty().isNull());
+        addMenu.getItems().get(2).disableProperty().bind(testNameTable.getSelectionModel().selectedItemProperty().isNull());
+        deleteMenu.getItems().get(0).disableProperty().bind(categoryTable.getSelectionModel().selectedItemProperty().isNull());
+        deleteMenu.getItems().get(1).disableProperty().bind(testNameTable.getSelectionModel().selectedItemProperty().isNull());
+        editMenu.getItems().get(0).disableProperty().bind(categoryTable.getSelectionModel().selectedItemProperty().isNull());
+        editMenu.getItems().get(1).disableProperty().bind(testNameTable.getSelectionModel().selectedItemProperty().isNull());
+        editMenu.getItems().get(2).disableProperty().bind(testNameTable.getSelectionModel().selectedItemProperty().isNull());
         categoryContextMenu.getItems().get(0).disableProperty().bind(categoryTable.getSelectionModel().
                 selectedItemProperty().isNull());
         categoryContextMenu.getItems().get(2).disableProperty().bind(categoryTable.getSelectionModel().
                 selectedItemProperty().isNull());
         testContextMenu.getItems().get(0).disableProperty().bind(testNameTable.getSelectionModel()
+                .selectedItemProperty().isNull());
+        testContextMenu.getItems().get(1).disableProperty().bind(categoryTable.getSelectionModel()
                 .selectedItemProperty().isNull());
         testContextMenu.getItems().get(2).disableProperty().bind(testNameTable.getSelectionModel()
                 .selectedItemProperty().isNull());

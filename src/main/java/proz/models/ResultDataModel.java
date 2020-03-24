@@ -99,6 +99,7 @@ public class ResultDataModel
     public void deleteResult(ResultFxModel resultFxModel) throws ApplicationException {
         resultDao.deleteById(Result.class, resultFxModel.getResultId());
         getResultsFromDataBase();
+        filterResultList();
     }
 
     private static void populateUsers(List<User> userList)
